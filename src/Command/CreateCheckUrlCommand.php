@@ -23,6 +23,8 @@ class CreateCheckUrlCommand extends Command
         $this           
             ->addArgument('website_url', InputArgument::REQUIRED, 'What is the website url?')
             ->addArgument('website_title', InputArgument::OPTIONAL, 'What is the website title?')
+            ->addArgument('sender', InputArgument::OPTIONAL, 'Input a sender')
+            ->addArgument('texter', InputArgument::OPTIONAL, 'Input a texter')                        
         ;
 
     }
@@ -30,8 +32,8 @@ class CreateCheckUrlCommand extends Command
     public function sendEmail( \Swift_Mailer $mailer)
     {   
         $message = (new \Swift_Message('Website warning message.'))
-            ->setFrom('send@example.com')
-            ->setTo('recipient@example.com')
+            ->setFrom('mtekiel777@gmail.com')
+            ->setTo('viajador777@egmail.com')
             ->setBody(
                 $this->renderView('Dear Customer, we would like to inform you that your website has problem with response ')                 
                                
@@ -55,10 +57,12 @@ class CreateCheckUrlCommand extends Command
         return;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output, TexterInterface $texter, \Swift_Mailer $mailer): int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
            
         $websiteUrl = $input->getArgument('website_url');
+        $sender = $input->getArgument('sender');
+        $texter = $input->getArgument('texter');
 
         $client = new GuzzleHttp\Client();
         $res = $client->request('GET', $websiteUrl);
@@ -78,5 +82,4 @@ class CreateCheckUrlCommand extends Command
         }
     }
     
-
 }

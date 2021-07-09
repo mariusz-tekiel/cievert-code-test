@@ -14,23 +14,26 @@ use Symfony\Component\Console\Input\InputArgument;
 class CheckUrlCommand extends Command 
 {
     protected static $defaultName = 'app:check-url';
-
+    
     protected function configure()
     {
                 
         $this           
             ->setDescription('Checks if website is till up.')
             ->addArgument('website_url', InputArgument::REQUIRED, 'What is the website url?')
-            ->addArgument('website_title', InputArgument::OPTIONAL, 'What is the website title?')  
+            ->addArgument('website_title', InputArgument::OPTIONAL, 'What is the website title?')
+            ->addArgument('customer_phone_no', InputArgument::OPTIONAL, 'What is the customer phone no?')
+            ->addArgument('customer_email', InputArgument::OPTIONAL, 'What is the customer email address?')  
             ->setHelp('This command checks if given website is still up');          
         ;        
     }
 
-    public function sendEmail( \Swift_Mailer $mailer)
+    public function sendEmail(\Swift_Mailer $mailer)
     {   
+        $customerEmail = $input->getArgument('customer_email');
         $message = (new \Swift_Message('Website warning message.'))
             ->setFrom('mtekiel777@gmail.com')
-            ->setTo('viajador777@gmail.com')
+            ->setTo($customerEmail)
             ->setBody(
                 $this->renderView('Dear Customer, we would like to inform you that your website has problem with response ')                
          
@@ -42,9 +45,10 @@ class CheckUrlCommand extends Command
 
     public function sendSms(TexterInterface $texter)
     {
+        $customerPhoneNo = $input->getArgument('customer_phone_no');
         $sms = new SmsMessage(
             // the phone number
-            '+447564676676',
+            $customerPhoneNo,
             // the message
             'Dear Customer, we would like to inform you that your website has problem with response'
         );

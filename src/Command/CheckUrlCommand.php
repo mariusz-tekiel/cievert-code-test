@@ -22,6 +22,8 @@ class CheckUrlCommand extends Command
             ->setDescription('Checks if website is till up.')
             ->addArgument('website_url', InputArgument::REQUIRED, 'What is the website url?')
             ->addArgument('website_title', InputArgument::OPTIONAL, 'What is the website title?')  
+            ->addArgument('texter', InputArgument::OPTIONAL, 'Input texter')  
+            ->addArgument('mailer', InputArgument::OPTIONAL, 'Input mailer')  
             ->setHelp('This command checks if given website is still up');          
         ;        
     }

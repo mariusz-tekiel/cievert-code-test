@@ -1,10 +1,10 @@
 <?php
 namespace App\Command;
-namespace App\Command\GuzzleHttp\Client;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use GuzzleHttp\Client;
 use Symfony\Component\Notifier\Message\SmsMessage;
 use Symfony\Component\Notifier\TexterInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,8 +22,6 @@ class CheckUrlCommand extends Command
             ->setDescription('Checks if website is till up.')
             ->addArgument('website_url', InputArgument::REQUIRED, 'What is the website url?')
             ->addArgument('website_title', InputArgument::OPTIONAL, 'What is the website title?')  
-            ->addArgument('texter', InputArgument::OPTIONAL, 'Input texter')  
-            ->addArgument('mailer', InputArgument::OPTIONAL, 'Input mailer')  
             ->setHelp('This command checks if given website is still up');          
         ;        
     }
@@ -31,8 +29,8 @@ class CheckUrlCommand extends Command
     public function sendEmail( \Swift_Mailer $mailer)
     {   
         $message = (new \Swift_Message('Website warning message.'))
-            ->setFrom('mtekiel777@gmail.com')
-            ->setTo('viajador777@egmail.com')
+            ->setFrom('send@example.com')
+            ->setTo('recipient@example.com')
             ->setBody(
                 $this->renderView('Dear Customer, we would like to inform you that your website has problem with response ')                
          
@@ -58,13 +56,10 @@ class CheckUrlCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $websiteUrl = $input->getArgument('website_url');
-        $sender = $input->getArgument('sender');
-        $texter = $input->getArgument('texter');
 
         $client = new \GuzzleHttp\Client();
         $res = $client->request('GET', $websiteUrl);
-        
-        // var_dump($res);  
+                        
         if($res->getStatusCode() == 200){            
             $output->write('We confirm that website is up.  ');
             return Command::SUCCESS;

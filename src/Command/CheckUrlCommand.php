@@ -29,8 +29,8 @@ class CheckUrlCommand extends Command
     public function sendEmail( \Swift_Mailer $mailer)
     {   
         $message = (new \Swift_Message('Website warning message.'))
-            ->setFrom('send@example.com')
-            ->setTo('recipient@example.com')
+            ->setFrom('mtekiel777@gmail.com')
+            ->setTo('viajador777@gmail.com')
             ->setBody(
                 $this->renderView('Dear Customer, we would like to inform you that your website has problem with response ')                
          
